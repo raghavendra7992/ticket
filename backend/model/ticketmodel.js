@@ -18,6 +18,9 @@ var ticketSchema = new mongoose.Schema({
         type:[String],
         required:true,
     },
+},{
+    versionKey:false,
+    timestamps:true,
 });
 
 //Export the model
