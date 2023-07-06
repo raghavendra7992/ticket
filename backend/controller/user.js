@@ -6,7 +6,7 @@ const generateToken = require("../middleware/token.js");
 const Signup = asyncHandler(async (req, res) => {
   const { name, email, mobile, password } = req.body;
   const hashedPassword = await argon.hash(password);
-  const existingUser = await UserModel.findOne({email}).maxTimeMS(15000);
+  const existingUser = await UserModel.findOne({}).maxTimeMS(15000);
 
   
 
