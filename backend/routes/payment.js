@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.post("/",createPayment)
 router.get("/:id",getPaymentById);
-router.put("/update/:id",updatePaymentStatus)
+router.put("/update/:id",updatePaymentStatus);
 
 
 
