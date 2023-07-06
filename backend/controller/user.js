@@ -4,33 +4,54 @@ const asyncHandler = require("express-async-handler");
 const generateToken = require("../middleware/token.js");
 
 const Signup = asyncHandler(async (req, res) => {
-  const { name, email, mobile, password } = req.body;
-  const hashedPassword = await argon.hash(password);
-  const existingUser = await UserModel.findOne({email}).maxTimeMS(15000);
+  // const { name, email, mobile, password } = req.body;
+  // const hashedPassword = await argon.hash(password);
+  // const existingUser = await UserModel.findOne({email}).maxTimeMS(15000);
 
   
 
-  if (existingUser) {
-    return res.status(400).send({ message: "User already exists" });
-  }
+  // if (existingUser) {
+  //   return res.status(400).send({ message: "User already exists" });
+  // }
 
-  let newUser = await UserModel.create({
-    name,
-    email,
-    mobile,
-    password: hashedPassword,
-  });
+  // let newUser = await UserModel.create({
+  //   name,
+  //   email,
+  //   mobile,
+  //   password: hashedPassword,
+  // });
 
-  if (newUser) {
-    return res.status(200).json({
-      _id: newUser._id,
-      name: newUser.name,
-      email: newUser.email,
-      mobile: newUser.mobile,
-    });
-  } else {
-    throw new Error("Unable to sign up");
+  // if (newUser) {
+  //   return res.status(200).json({
+  //     _id: newUser._id,
+  //     name: newUser.name,
+  //     email: newUser.email,
+  //     mobile: newUser.mobile,
+  //   });
+  // } else {
+  //   throw new Error("Unable to sign up");
+  // }
+
+  let {name,email,password}=req.body;
+    
+  let u=await UserModel.find({email})
+  if(u.length>0){
+      res.send({"msg":"Registration Failed User Already Exist"})
+  }else{
+  
+      bcrypt.hash(password, 5, async function(err, hash) {
+    
+          let user = await UserModel.insertMany([{name,email,mobile,password:hash}])
+          
+          res.send({"msg":"Registration Success","user":user})
+          
+          });
+  
+  
   }
+  
+
+
 });
 
 const Login = asyncHandler(async (req, res) => {
