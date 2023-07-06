@@ -10,7 +10,12 @@ const morgan = require('morgan');
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors({origin:"*"}))
+app.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', "default-src 'self'; style-src 'self' 'unsafe-inline';");
+    next();
+  });
 app.use("/",user)
+
 
 app.use('/booking',Booking)
 
