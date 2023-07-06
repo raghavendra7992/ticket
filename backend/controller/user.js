@@ -32,24 +32,32 @@ const Signup = asyncHandler(async (req, res) => {
   //   throw new Error("Unable to sign up");
   // }
 
-  let {name,email,mobile,password}=req.body;
-    
-  let u=await UserModel.find({email})
-  if(u.length>0){
-      res.send({"msg":"Registration Failed User Already Exist"})
-  }else{
-  
-      bcrypt.hash(password, 5, async function(err, hash) {
-    
-          let user = await UserModel.insertMany([{name,email,mobile,password:hash}])
-          
-          res.send({"msg":"Registration Success","user":user})
-          
-          });
-  
-  
+  const {name,mobile,email,password}=req.body
+  try {
+       // Input validation - check that name, email, and password are present in the request body
+  if (!name || !mobile || !email  || !password) {
+    return res.status(400).json({
+      message: "Name, mobile,email and password are required.",
+    });
   }
-  
+      const check=await Usermodel.find({email})
+      
+      if(check.length>0){
+          return res.status(400).json({"message":"User already exist"})
+      }
+      bcrypt.hash(password, 5, async(err, secure_password)=> {
+         if(err){
+          console.log(err)
+         }else{
+          const user=new Usermodel({name,mobile,email,password:secure_password});
+          await user.save();
+          res.status(201).json({"message":"Account Created successfully"})
+         }
+      });
+  } catch (err) {
+      console.log(err);
+      res.status(500).json({"message":"Getting error while creating account"})
+  }
 
 
 });
