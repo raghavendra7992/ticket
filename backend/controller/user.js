@@ -32,7 +32,7 @@ const Signup = asyncHandler(async (req, res) => {
   //   throw new Error("Unable to sign up");
   // }
 
-  let {name,email,password}=req.body;
+  let {name,email,mobile,password}=req.body;
     
   let u=await UserModel.find({email})
   if(u.length>0){
