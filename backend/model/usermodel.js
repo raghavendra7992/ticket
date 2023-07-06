@@ -4,21 +4,16 @@ const validate= require('validator');
 var userSchema = new mongoose.Schema({
     name:{
         type:String,
-        required:[true,"Please enter ur name"],
+        required:true,
         index:true,
     },
     email:{
         type:String,
-        required:[true,"Please enter email address"],
-        validate:[validate.isEmail,"please enter a valid email"],
-        unique:true,
+        required:true,
     },
     mobile:{
         type:String,
         required:true,
-        minLength:[10,"please enter correct number"],
-        maxLength:[10,"please enter correct number"],
-
         unique:true,
     },
     password:{
@@ -27,8 +22,6 @@ var userSchema = new mongoose.Schema({
         // minLength:[6,"password more than 5 characters and Less than 20 characters"],
         // maxLength:[20,"password more than 5 characters and less than 20 characters"]
     },
-},{
-    timestamps:true,
 });
 
 
